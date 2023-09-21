@@ -31,7 +31,7 @@ if user_input:
 cap = cv2.VideoCapture(url)
 _, frame = cap.read()
 h, w, c = frame.shape
-
+print(h, w)
 start_btn_pressed = st.button("start")
 stop_btn_pressed = st.button("stop")
 
@@ -108,12 +108,14 @@ if start_btn_pressed:
                 letter = "{} prob:{}".format(letter, probabality)
                 font = cv2.FONT_HERSHEY_SIMPLEX
                 position = (x_max, y_min)  # Specify the (x, y) coordinates where you want to place the text
-                font_scale = 2  # Font scale
+                font_scale = round(h/400)  # Font scale
+
                 font_color = (255, 255, 255)  # Font color in BGR format (white in this example)
-                font_thickness = 2  # Font thickness
+                font_thickness = round(h/200)  # Font thickness
 
                 # Draw the text on the frame
-                cv2.putText(frame,letter, position, font, font_scale, font_color, font_thickness)             
+                cv2.putText(frame,letter, position, font, font_scale, font_color, font_thickness)     
+                print(font_scale,h)        
                 print(letter, probabality)
 
 
@@ -122,7 +124,8 @@ if start_btn_pressed:
                 pass
 
         # cv2.imshow("Frame", frame)
-        frame_placeholder.image(frame, channels="RGB")
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame_placeholder.image(frame)
         if cv2.waitKey(1) & 0XFF==ord('q'):
             break
 
